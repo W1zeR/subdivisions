@@ -1,11 +1,20 @@
+using WebApi.Context;
+using WebApi.Models;
+using WebApi.Repositories;
+using WebApi.Servicies;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+services.AddControllers();
+services.AddDbContext<AppDbContext>();
+services.AddAutoMapper(typeof(SubdivisionStatusResponseMapProfile));
+services.AddScoped<ISubdivisionRepository, SubdivisionRepository>();
+services.AddScoped<ISubdivisionService, SubdivisionService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 

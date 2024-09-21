@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApi.Entity;
-using Microsoft.Extensions.Configuration;
 
 namespace WebApi.Context
 {
@@ -15,6 +14,16 @@ namespace WebApi.Context
                 .Build();
 
             optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Subdivision>().HasData(
+                    new Subdivision { Id = 1, Name = "Подразделение", IsActive = true },
+                    new Subdivision { Id = 2, Name = "Часть подразделения", IsActive = false, MainId = 1 },
+                    new Subdivision { Id = 3, Name = "Часть отдела", IsActive = true, MainId = 4 },
+                    new Subdivision { Id = 4, Name = "Отдел", IsActive = false }
+            );
         }
     }
 }
