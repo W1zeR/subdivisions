@@ -4,6 +4,12 @@ namespace WebApi.Servicies
 {
     public interface ISubdivisionService
     {
-        Task<List<SubdivisionStatusResponse>> GetSubdivisionsStatuses();
+        Task<List<SubdivisionResponse>> GetAll();
+
+        Task<SubdivisionResponse> GetById(int id);
+
+        Task Add(SubdivisionRequest subdivision);
+
+        Task Update(int id, SubdivisionRequest subdivision);
     }
 }

@@ -18,6 +18,8 @@ namespace WebApi.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Subdivision>().HasIndex(s => s.Name).IsUnique();
+
             modelBuilder.Entity<Subdivision>().HasData(
                     new Subdivision { Id = 1, Name = "Подразделение", IsActive = true },
                     new Subdivision { Id = 2, Name = "Часть подразделения", IsActive = false, MainId = 1 },
