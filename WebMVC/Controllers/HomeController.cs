@@ -1,26 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebMVC.Models;
+using WebMVC.Services;
 
 namespace WebMVC.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ISubdivisionService service) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            List<Subdivision> subdivisions = await service.GetAll();
+            return View(subdivisions);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,7 +1,12 @@
+using WebMVC.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+var services = builder.Services;
+services.AddHttpClient();
+services.AddScoped<ISubdivisionService, SubdivisionService>();
+services.AddControllersWithViews();
 
 var app = builder.Build();
 
