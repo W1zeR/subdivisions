@@ -1,3 +1,5 @@
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using WebMVC.Models;
 using WebMVC.Services;
 
@@ -9,6 +11,11 @@ services.AddHttpClient();
 services.AddAutoMapper(typeof(SubdivisionRequestMapProfile));
 services.AddScoped<ISubdivisionService, SubdivisionService>();
 services.AddControllersWithViews();
+services.AddWebEncoders(o =>
+{
+    o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic, 
+        UnicodeRanges.CyrillicExtendedA, UnicodeRanges.CyrillicExtendedB);
+});
 
 var app = builder.Build();
 

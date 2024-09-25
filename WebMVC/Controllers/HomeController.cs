@@ -28,7 +28,14 @@ namespace WebMVC.Controllers
         {
             if (file == null || file.Length == 0)
             {
-                return BadRequest("Файл не выбран или он пустой");
+                TempData["SyncResult"] = "Файл не выбран или он пустой";
+                return RedirectToAction("Index");
+            }
+
+            if (file.ContentType != "application/json")
+            {
+                TempData["SyncResult"] = "Необходим файл с расширением json";
+                return RedirectToAction("Index");
             }
 
             using (var stream = new StreamReader(file.OpenReadStream()))
@@ -39,7 +46,8 @@ namespace WebMVC.Controllers
                 await service.Sync(departmentsFromFile!);
             }
 
-            return Ok("Синхронизация данных прошла успешно");
+            TempData["SyncResult"] = "Синхронизация данных прошла успешно";
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
