@@ -13,6 +13,16 @@ namespace WebMVC.Controllers
             return View(subdivisions);
         }
 
+        public async Task<IActionResult> Subdivisions(string search)
+        {
+            List<Subdivision> subdivisions = await service.GetAll();
+            if (!string.IsNullOrEmpty(search))
+            {
+                subdivisions = subdivisions.Where(s => s.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            return PartialView(subdivisions);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

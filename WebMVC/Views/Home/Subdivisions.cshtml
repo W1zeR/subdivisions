@@ -1,0 +1,37 @@
+﻿@model List<Subdivision>
+
+<table class="table" id="itemsTable">
+    <thead>
+        <tr>
+            <th>Идентификатор</th>
+            <th>Наименование</th>
+            <th>Статус</th>
+            <th>Идентификатор главного подразделения</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                @if (item.IsActive)
+                {
+                    <td>Активно</td>
+                }
+                else
+                {
+                    <td>Заблокировано</td>
+                }
+                @if (item.MainId == null)
+                {
+                    <td>-</td>
+                }
+                else
+                {
+                    <td>@item.MainId</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

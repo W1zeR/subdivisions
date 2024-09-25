@@ -4,26 +4,35 @@
 
 @model List<Subdivision>
 
-<br />
-<br />
-<table class="table">
-    <tdead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>IsActive</th>
-            <th>MainId</th>
-        </tr>
-    </tdead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>@item.IsActive</td>
-                <td>@item.MainId</td>
-            </tr>
+<div>
+    <input type="text" id="searchInput" size="30" placeholder="Поиск по наименованию..." />
+    <button id="searchButton">Найти</button>
+</div>
+<div id="table-container">
+    <partial name="Subdivisions" />
+</div>
+
+@section Scripts {
+    <script>
+        function updateTable(searchArg) {
+            $.ajax({
+                url: '@Url.Action("Subdivisions", "Home")',
+                type: 'GET',
+                data: { search: searchArg },
+                success: function (result) {
+                    $('#table-container').html(result);
+                }
+            });
         }
-    </tbody>
-</table>
+
+        // Обновление данных каждые 3 секунды
+        setInterval(function () {
+            updateTable($('#searchInput').val());
+        }, 3000);
+
+        // Поиск
+        $('#searchButton').click(function () {
+            updateTable($('#searchInput').val());
+        });
+    </script>
+}
