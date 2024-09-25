@@ -3,7 +3,7 @@ using WebApi.Context;
 using WebApi.Middlewares;
 using WebApi.Models;
 using WebApi.Repositories;
-using WebApi.Servicies;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;

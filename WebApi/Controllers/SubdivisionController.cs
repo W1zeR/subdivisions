@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Web.Http.Cors;
 using WebApi.Models;
-using WebApi.Servicies;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {

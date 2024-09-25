@@ -1,6 +1,6 @@
 ﻿using WebApi.Models;
 
-namespace WebApi.Servicies
+namespace WebApi.Services
 {
     public interface ISubdivisionService
     {

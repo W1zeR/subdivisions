@@ -5,7 +5,7 @@ using WebApi.Exceptions;
 using WebApi.Models;
 using WebApi.Repositories;
 
-namespace WebApi.Servicies
+namespace WebApi.Services
 {
     public class SubdivisionService(ISubdivisionRepository repository, IMapper mapper,
         IValidator<SubdivisionRequest> validator) : ISubdivisionService

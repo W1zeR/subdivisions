@@ -4,10 +4,25 @@
 
 @model List<Subdivision>
 
+<form asp-controller="Home" asp-action="Sync" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Выберите JSON-файл:</label>
+        <br />
+        <input type="file" id="file" name="file" accept=".json" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Синхронизация данных</button>
+</form>
+
+<br />
+
 <div>
     <input type="text" id="searchInput" size="30" placeholder="Поиск по наименованию..." />
     <button id="searchButton">Найти</button>
 </div>
+
+<br />
+
 <div id="table-container">
     <partial name="Subdivisions" />
 </div>
@@ -29,7 +44,9 @@
         setInterval(function () {
             updateTable($('#searchInput').val());
         }, 3000);
+    </script>
 
+    <script>
         // Поиск
         $('#searchButton').click(function () {
             updateTable($('#searchInput').val());

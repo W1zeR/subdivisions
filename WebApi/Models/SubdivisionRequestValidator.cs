@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using System.Xml;
 using WebApi.Context;
 using WebApi.Entity;
 
@@ -13,14 +14,6 @@ namespace WebApi.Models
         {
             this.context = context;
 
-            RuleFor(x => x.Name)
-                .MustAsync(async (name, cancellation) =>
-                {
-                    bool exists = await IsNameExists(name);
-                    return !exists;
-                })
-                .WithMessage("Наименование подразделения должно быть уникальным");
-
             RuleFor(x => x.MainId)
                 .MustAsync(async (id, cancellation) =>
                 {
@@ -31,14 +24,6 @@ namespace WebApi.Models
                     return await IsIdExists((int)id);
                 })
                 .WithMessage($"Некорректное значение идентификатора главного подразделения");
-        }
-
-        private async Task<bool> IsNameExists(string name)
-        {
-            Subdivision? subdivision = await context.Subdivisions
-                .Where(s => s.Name.ToLower() == name.ToLower())
-                .SingleOrDefaultAsync();
-            return subdivision != null;
         }
 
         private async Task<bool> IsIdExists(int id)
