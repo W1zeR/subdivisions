@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Diagnostics;
+using WebMVC.Exceptions;
 using WebMVC.Models;
 using WebMVC.Services;
 
 namespace WebMVC.Controllers
 {
-    public class HomeController(ISubdivisionService service) : Controller
+    public class HomeController(ISubdivisionService service, ILogger<HomeController> logger) : Controller
     {
         public async Task<IActionResult> Index()
         {
@@ -16,38 +16,51 @@ namespace WebMVC.Controllers
 
         public async Task<IActionResult> Subdivisions(string search)
         {
-            List<Subdivision> subdivisions = await service.GetAll();
-            if (!string.IsNullOrEmpty(search))
-            {
-                subdivisions = subdivisions.Where(s => s.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
+            List<Subdivision> subdivisions = await service.Search(search);
             return PartialView(subdivisions);
         }
 
         public async Task<IActionResult> Sync(IFormFile file)
         {
+            try
+            {
+                ValidateFileNotEmpty(file);
+                ValidateFileIsJson(file);
+            }
+            catch (FormFileException e)
+            {
+                TempData["SyncResult"] = e.Message;
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                await service.SyncWithFile(file);
+                TempData["SyncResult"] = "Синхронизация данных прошла успешно";
+            }
+            catch (Exception)
+            {
+                logger.LogError("Error in method Sync of HomeController");
+                TempData["SyncResult"] = "Произошла ошибка синхронизации данных";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        private static void ValidateFileNotEmpty(IFormFile file)
+        {
             if (file == null || file.Length == 0)
             {
-                TempData["SyncResult"] = "Файл не выбран или он пустой";
-                return RedirectToAction("Index");
+                throw new FormFileException("Файл не выбран или он пустой");
             }
+        }
 
+        private static void ValidateFileIsJson(IFormFile file)
+        {
             if (file.ContentType != "application/json")
             {
-                TempData["SyncResult"] = "Необходим файл с расширением json";
-                return RedirectToAction("Index");
+                throw new FormFileException("Необходим файл с расширением json");
             }
-
-            using (var stream = new StreamReader(file.OpenReadStream()))
-            {
-                var json = await stream.ReadToEndAsync();
-                var departmentsFromFile = JsonConvert.DeserializeObject<List<Subdivision>>(json);
-
-                await service.Sync(departmentsFromFile!);
-            }
-
-            TempData["SyncResult"] = "Синхронизация данных прошла успешно";
-            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

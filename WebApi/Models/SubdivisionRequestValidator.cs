@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Xml;
 using WebApi.Context;
 using WebApi.Entity;
 

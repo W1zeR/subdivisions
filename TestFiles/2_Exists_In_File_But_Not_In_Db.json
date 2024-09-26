@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Подразделение",
+    "isActive": true,
+    "mainId": null
+  },
+  {
+    "id": 2,
+    "name": "Часть подразделения",
+    "isActive": false,
+    "mainId": 1
+  },
+  {
+    "id": 3,
+    "name": "Часть отдела",
+    "isActive": true,
+    "mainId": 4
+  },
+  {
+    "id": 4,
+    "name": "Отдел",
+    "isActive": false,
+    "mainId": null
+  },
+  {
+    "id": 5,
+    "name": "Отдел из файла",
+    "isActive": true,
+    "mainId": null
+  }
+]

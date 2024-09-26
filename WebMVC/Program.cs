@@ -13,7 +13,7 @@ services.AddScoped<ISubdivisionService, SubdivisionService>();
 services.AddControllersWithViews();
 services.AddWebEncoders(o =>
 {
-    o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic, 
+    o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic,
         UnicodeRanges.CyrillicExtendedA, UnicodeRanges.CyrillicExtendedB);
 });
 

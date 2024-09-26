@@ -6,6 +6,8 @@ namespace WebMVC.Services
     {
         Task<List<Subdivision>> GetAll();
 
-        Task Sync(List<Subdivision> subdivisionsFromFile);
+        Task<List<Subdivision>> Search(string search);
+
+        Task SyncWithFile(IFormFile file);
     }
 }
