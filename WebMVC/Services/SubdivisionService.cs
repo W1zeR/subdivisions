@@ -69,17 +69,17 @@ namespace WebMVC.Services
 
         private async Task Add(Subdivision subdivision, HttpClient client)
         {
-            StringContent stringContent = GetStringContent(subdivision, mapper);
+            StringContent stringContent = GetStringContent(subdivision);
             await client.PostAsync(configuration["URLs:WebAPI"], stringContent);
         }
 
         private async Task Update(Subdivision subdivision, HttpClient client)
         {
-            StringContent stringContent = GetStringContent(subdivision, mapper);
+            StringContent stringContent = GetStringContent(subdivision);
             await client.PutAsync(configuration["URLs:WebAPI"] + $"/{subdivision.Id}", stringContent);
         }
 
-        private static StringContent GetStringContent(Subdivision subdivision, IMapper mapper)
+        private StringContent GetStringContent(Subdivision subdivision)
         {
             SubdivisionRequest request = mapper.Map<SubdivisionRequest>(subdivision);
             var json = JsonConvert.SerializeObject(request);
